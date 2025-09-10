@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout-Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+        }
+        .card {
+            background-color: #1E1E1E;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .exercise-item {
+            background-color: #2D2D2D;
+            border-radius: 0.75rem;
+        }
+        .section-title {
+            color: #BB86FC;
+        }
+        .btn {
+            background: linear-gradient(90deg, #BB86FC 0%, #3700B3 100%);
+            border: none;
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(187, 134, 252, 0.4);
+            transition: all 0.3s ease-in-out;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(187, 134, 252, 0.6);
+        }
+        .exercise-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl mx-auto">
+        <!-- Titel -->
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-8 section-title">
+            Dein Workout-Generator
+        </h1>
+
+        <!-- Workout-Plan-Container -->
+        <div id="workout-plan" class="card p-6 md:p-10 mb-8 space-y-6">
+            <div class="text-center text-gray-400">Klicke auf "Workout generieren", um zu starten!</div>
+        </div>
+
+        <!-- Generieren-Button -->
+        <div class="flex justify-center">
+            <button id="generate-btn" class="btn">
+                Workout generieren
+            </button>
+        </div>
+
+        <!-- Modale für Dialoge (ohne alert()) -->
+        <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-800 p-6 md:p-8 rounded-2xl shadow-lg w-full max-w-sm">
+                <p id="modal-message" class="text-lg text-center font-semibold mb-4"></p>
+                <div class="flex justify-center">
+                    <button id="modal-close" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funktion zum Anzeigen eines benutzerdefinierten Modals anstelle von alert()
+        function showCustomAlert(message) {
+            const modal = document.getElementById('modal');
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('modal-close').addEventListener('click', () => {
+            document.getElementById('modal').classList.add('hidden');
+        });
+
+        // Die Übungen mit korrekten Bildpfaden
+        const exercises = {
+            "Mobility": [
+                { name: "Bench T-Spine Stretch", image: "" },
+                { name: "Childs Pose", image: "" },
+                { name: "Supine Back Stretch / Open Book Stretch", image: "Übungsbibliothek_Mobility-Dateien/image003.jpg" },
+                { name: "Downward Dog to Cobra", image: "" },
+                { name: "Reverse Childs Pose", image: "Übungsbibliothek_Mobility-Dateien/image004.png" },
+                { name: "Dead Hang", image: "" },
+                { name: "Special Hip Flexor Stretch", image: "Übungsbibliothek_Mobility-Dateien/image005.png" },
+                { name: "Pigeon Pose", image: "Übungsbibliothek_Mobility-Dateien/image006.png" },
+                { name: "Frog Stretch", image: "" },
+                { name: "Kneeling Hip Flexor Stretch", image: "Übungsbibliothek_Mobility-Dateien/image007.png" },
+                { name: "(Seated) Forward Bend", image: "" },
+                { name: "Knee to Chest Stretch with Foam Roller", image: "Übungsbibliothek_Mobility-Dateien/image008.png" },
+                { name: "Side Back Stretch", image: "Übungsbibliothek_Mobility-Dateien/image009.png" },
+                { name: "Reverse Leg Crossover", image: "Übungsbibliothek_Mobility-Dateien/image010.png" },
+                { name: "Shin Box Quad", image: "Übungsbibliothek_Mobility-Dateien/image011.png" },
+                { name: "Seated Twist", image: "Übungsbibliothek_Mobility-Dateien/image012.png" },
+                { name: "Wall Shoulder Stretch", image: "" },
+                { name: "Deep Lunch Stretch and Open", image: "" },
+                { name: "Lizard Stretch", image: "" }
+            ],
+            "Schulter, Rücken & Haltung": [
+                { name: "Crap Pose oder Reverse Plank", image: "Übungsbibliothek_Mobility-Dateien/image015.png" },
+                { name: "Bent Over Shoulder Stretch", image: "Übungsbibliothek_Mobility-Dateien/image016.png" },
+                { name: "Mini Loop Band Scapular Retraction", image: "Übungsbibliothek_Mobility-Dateien/image017.png" },
+                { name: "Wall Slide Stretch", image: "" },
+                { name: "Chest Doorway Stretch", image: "" },
+                { name: "Cat Cow", image: "" },
+                { name: "Loop Band Laying Shoulder Internal Rotation oder andere Rotationsübungen", image: "Übungsbibliothek_Mobility-Dateien/image018.png" },
+                { name: "Overhead PVC Shoulder Stretch", image: "" },
+                { name: "Seated Neck Release Stretch", image: "Übungsbibliothek_Mobility-Dateien/image019.png" },
+                { name: "Reach Behind and open (add Loop Band)", image: "" },
+                { name: "Side Bend Stretch", image: "Übungsbibliothek_Mobility-Dateien/image020.png" },
+                { name: "Lat Stretch with Torso Rotation", image: "Übungsbibliothek_Mobility-Dateien/image021.png" },
+                { name: "PVC Exercises", image: "" },
+                { name: "Kneeling Side Plank with Kettlebell Overhead Hold", image: "Übungsbibliothek_Mobility-Dateien/image022.png" },
+                { name: "Wall Lat Stretch mit gebeugten Armen", image: "Übungsbibliothek_Mobility-Dateien/image023.png" },
+                { name: "(Wall assisted) Pike Stretch", image: "Übungsbibliothek_Mobility-Dateien/image024.png" },
+                { name: "Stand Hold", image: "Übungsbibliothek_Mobility-Dateien/image025.png" }
+            ],
+            "Fußgewölbe": [
+                { name: "Fuß Handtuch Übung", image: "" },
+                { name: "Fußgewölbe massieren (komplette Sohle)", image: "" },
+                { name: "Zehenspitzenstand auf Stufe", image: "Übungsbibliothek_Mobility-Dateien/image026.png" },
+                { name: "Barfuß Gleichgewichtsübungen / Einbeinige Übungen", image: "" },
+                { name: "Kräftigung des Schienbeins mit Loop Band", image: "Übungsbibliothek_Mobility-Dateien/image027.png" },
+                { name: "Fußgewölbe aufrichten", image: "" },
+                { name: "Zeh einknicken", image: "" },
+                { name: "Handdrehung der Zehen", image: "" }
+            ]
+        };
+
+        // Funktion zum Abrufen einer zufälligen Anzahl von Übungen aus einem Array
+        function getRandomExercises(arr, count) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // Funktion zum Generieren und Anzeigen des Workout-Plans
+        function generateWorkout() {
+            const workoutPlanDiv = document.getElementById('workout-plan');
+            workoutPlanDiv.innerHTML = ''; // Vorherigen Inhalt löschen
+
+            const selectedMobility = getRandomExercises(exercises["Mobility"], 4);
+            const selectedShoulder = getRandomExercises(exercises["Schulter, Rücken & Haltung"], 2);
+            const selectedFoot = getRandomExercises(exercises["Fußgewölbe"], 2);
+
+            const workout = {
+                "Mobility": selectedMobility,
+                "Schulter, Rücken & Haltung": selectedShoulder,
+                "Fußgewölbe": selectedFoot
+            };
+
+            // Den generierten Workout-Plan anzeigen
+            for (const category in workout) {
+                if (workout[category].length > 0) {
+                    const categoryTitle = document.createElement('h2');
+                    categoryTitle.className = 'text-xl md:text-2xl font-bold section-title mb-4';
+                    categoryTitle.textContent = category;
+                    workoutPlanDiv.appendChild(categoryTitle);
+
+                    const ul = document.createElement('ul');
+                    ul.className = 'space-y-3';
+                    workout[category].forEach(exercise => {
+                        const li = document.createElement('li');
+                        li.className = 'exercise-item p-4 rounded-xl shadow-inner flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4';
+                        
+                        // Exercise image (if available)
+                        if (exercise.image) {
+                            const img = document.createElement('img');
+                            img.src = exercise.image;
+                            img.alt = `Bild für ${exercise.name}`;
+                            img.className = 'exercise-image rounded-lg flex-shrink-0';
+                            // Fallback, falls das Bild aus irgendeinem Grund nicht gefunden wird
+                            img.onerror = function() {
+                                img.src = `https://placehold.co/80x80/2d2d2d/ffffff?text=${encodeURIComponent(exercise.name.substring(0, 3).toUpperCase())}`;
+                            };
+                            li.appendChild(img);
+                        }
+                        
+                        // Exercise name
+                        const exerciseName = document.createElement('span');
+                        exerciseName.textContent = exercise.name;
+                        exerciseName.className = 'flex-grow';
+                        li.appendChild(exerciseName);
+                        
+                        ul.appendChild(li);
+                    });
+                    workoutPlanDiv.appendChild(ul);
+                }
+            }
+
+            if (workoutPlanDiv.innerHTML === '') {
+                 showCustomAlert('Es gab ein Problem beim Generieren des Workouts. Bitte versuche es erneut.');
+            }
+        }
+
+        // Event-Listener für den Button
+        document.getElementById('generate-btn').addEventListener('click', generateWorkout);
+
+        // Generiere beim Laden der Seite ein erstes Workout
+        window.onload = generateWorkout;
+
+    </script>
+
+</body>
+</html>
