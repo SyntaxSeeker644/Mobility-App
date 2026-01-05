@@ -101,7 +101,7 @@
             "Mobility": [
                 { name: "Bench T-Spine Stretch", image: "" },
                 { name: "Childs Pose", image: "" },
-                { name: "Supine Back Stretch / Open Book Stretch", image: "Übungsbibliothek_Mobility-Dateien/image003.png" },
+                { name: "Supine Back Stretch / Open Book Stretch", image: "Übungsbibliothek_Mobility-Dateien/image003.jpg" },
                 { name: "Downward Dog to Cobra", image: "" },
                 { name: "Reverse Childs Pose", image: "Übungsbibliothek_Mobility-Dateien/image004.png" },
                 { name: "Dead Hang", image: "" },
@@ -126,7 +126,7 @@
                 { name: "Wall Slide Stretch", image: "" },
                 { name: "Chest Doorway Stretch", image: "" },
                 { name: "Cat Cow", image: "" },
-                { name: "Loop Band Laying Shoulder Internal Rotation oder andere Rotationsübungen", image: "Übungsbibliothek_Mobility-Dateien/image018.png" },
+                { name: "Loop Band Laying Shoulder Internal Rotation", image: "Übungsbibliothek_Mobility-Dateien/image018.png" },
                 { name: "Overhead PVC Shoulder Stretch", image: "" },
                 { name: "Seated Neck Release Stretch", image: "Übungsbibliothek_Mobility-Dateien/image019.png" },
                 { name: "Reach Behind and open (add Loop Band)", image: "" },
@@ -136,13 +136,28 @@
                 { name: "Kneeling Side Plank with Kettlebell Overhead Hold", image: "Übungsbibliothek_Mobility-Dateien/image022.png" },
                 { name: "Wall Lat Stretch mit gebeugten Armen", image: "Übungsbibliothek_Mobility-Dateien/image023.png" },
                 { name: "(Wall assisted) Pike Stretch", image: "Übungsbibliothek_Mobility-Dateien/image024.png" },
-                { name: "Stand Hold", image: "Übungsbibliothek_Mobility-Dateien/image025.png" }
+                { name: "Stand Hold", image: "Übungsbibliothek_Mobility-Dateien/image025.png" },
+                { name: "Crunches", image: "" },
+                { name: "Plank", image: "" }
+            ],
+            "Hüfte und Gesäß": [
+                { name: "Straight Leg Liftoffs", image: "" },
+                { name: "Liegende Beinabduktion", image: "Übungsbibliothek_Mobility-Dateien/image028.png" },
+                { name: "Seitliche Beinabduktion", image: "Übungsbibliothek_Mobility-Dateien/image029.png" },
+                { name: "Hip Hitch Pelvic Drop", image: "Übungsbibliothek_Mobility-Dateien/image030.png" },
+                { name: "Monster Walk", image: "Übungsbibliothek_Mobility-Dateien/image031.png" },
+                { name: "Single Leg Romanian Deadlift", image: "" },
+                { name: "Bear Plank with Foam Roller Isometric Squeeze", image: "Übungsbibliothek_Mobility-Dateien/image032.png" },
+                { name: "Supine Hip Isometric Squeeze with Foam Roller", image: "Übungsbibliothek_Mobility-Dateien/image033.png" },
+                { name: "Turkish Get Up", image: "Übungsbibliothek_Mobility-Dateien/image034.png" },
+                { name: "Glute Bridge", image: "" },
+                { name: "Lunges", image: "" }
             ],
             "Fußgewölbe": [
                 { name: "Fuß Handtuch Übung", image: "" },
                 { name: "Fußgewölbe massieren (komplette Sohle)", image: "" },
                 { name: "Zehenspitzenstand auf Stufe", image: "Übungsbibliothek_Mobility-Dateien/image026.png" },
-                { name: "Barfuß Gleichgewichtsübungen / Einbeinige Übungen", image: "" },
+                { name: "Barfuß Gleichgewichtsübungen", image: "" },
                 { name: "Kräftigung des Schienbeins mit Loop Band", image: "Übungsbibliothek_Mobility-Dateien/image027.png" },
                 { name: "Fußgewölbe aufrichten", image: "" },
                 { name: "Zeh einknicken", image: "" },
@@ -157,17 +172,19 @@
         }
 
         // Funktion zum Generieren und Anzeigen des Workout-Plans
-        function generateWorkout() {
+       function generateWorkout() {
             const workoutPlanDiv = document.getElementById('workout-plan');
             workoutPlanDiv.innerHTML = ''; // Vorherigen Inhalt löschen
 
             const selectedMobility = getRandomExercises(exercises["Mobility"], 4);
             const selectedShoulder = getRandomExercises(exercises["Schulter, Rücken & Haltung"], 2);
+            const selectedHip = getRandomExercises(exercises["Hüfte und Gesäß"], 2); // Neu
             const selectedFoot = getRandomExercises(exercises["Fußgewölbe"], 2);
 
             const workout = {
                 "Mobility": selectedMobility,
                 "Schulter, Rücken & Haltung": selectedShoulder,
+                "Hüfte und Gesäß": selectedHip, // Neu
                 "Fußgewölbe": selectedFoot
             };
 
@@ -225,4 +242,5 @@
 
 </body>
 </html>
+
 
